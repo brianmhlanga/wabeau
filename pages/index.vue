@@ -3,5 +3,6 @@
         <LandingNavbar/>
         <LandingHeader/>
         <LandingThird/>
+        <LandingFooter />
     </NuxtLayout>
 </template>
