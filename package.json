@@ -57,6 +57,7 @@
     "qs": "^6.11.0",
     "quill": "^1.3.7",
     "sweetalert2": "^11.4.8",
+    "typewriter-effect": "^2.21.0",
     "v-idle": "^0.2.1",
     "vue-phone-number-input": "^1.12.13",
     "vue-simple-calendar": "^6.3.1",
