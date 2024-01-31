@@ -13,7 +13,7 @@ export default defineEventHandler(async (event)=>{
         success: false
       };
     }
-   const  user = await prisma.student.findFirst({
+   const  user = await prisma.user.findFirst({
       where: {
          
            email: email,
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event)=>{
 
          //Store his last Login IP Address and time
          
-         const updateUser = await prisma.student.update({
+         const updateUser = await prisma.user.update({
             where: {
                email
             }, 
