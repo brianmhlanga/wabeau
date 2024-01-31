@@ -4,7 +4,7 @@
         <div class="surface-ground px-4 py-8 md:px-6 lg:px-8 flex align-items-center justify-content-center">
             <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
             <div class="text-center mb-5">
-                <img src="/images/blocks/logos/hyper.svg" alt="Image" height="50" class="mb-3">
+                <img src="/images/logo.png" alt="Image" height="100" class="mb-3">
                 <div class="text-900 text-3xl font-medium mb-3">Welcome Back</div>
                 <span class="text-600 font-medium line-height-3">Don't have an account?</span>
                 <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Create today!</a>
@@ -18,7 +18,7 @@
               
                 <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot password?</a>
                 </div>
-                <button @click="signIn" class="p-button p-component w-full" type="button" aria-label="Sign In" data-pc-name="button" data-pc-section="root" data-pd-ripple="true">
+                <button @click="signIn" class="p-button p-component w-full customColor" type="button" aria-label="Sign In" data-pc-name="button" data-pc-section="root" data-pd-ripple="true">
                 <span class="p-button-icon p-button-icon-left pi pi-user" data-pc-section="icon"></span>
                 <span class="p-button-label" data-pc-section="label">Sign In</span>
                 <!---->
@@ -55,7 +55,7 @@ const signIn = async () => {
             navigateTo('/')
         }
         else {
-                toast.add({severity:'warn', summary: 'Registration failed', detail: "Failed to Register", life: 6000});
+                toast.add({severity:'warn', summary: 'Login Failed', detail: data?.data?.message, life: 6000});
         }
     })
 }
@@ -78,5 +78,9 @@ input.p-inputtext.p-component {
 }
 .p-input-icon-right > .p-inputtext {
     padding-right: 218px !important;
+}
+button.p-button.p-component.w-full.customColor {
+    background-color: #FCAB2B;
+    border-color: #FCAB2B;
 }
 </style>
