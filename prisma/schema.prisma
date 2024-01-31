@@ -1,167 +1,138 @@
-
-generator client  {
+generator client {
   provider = "prisma-client-js"
-}
-
-generator erd {
-  provider = "prisma-erd-generator"
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
 model User {
-  id                String         @id @default(cuid())
-  email              String         @unique
-  username           String         @unique
-  name               String?
-  title              String?      
-  surname            String?
-  phone              String?        @unique
-  age                Int?
-  gender             Gender     
-  profile            profile_type @default(ADMIN)
-  password           String
-  salt               String
-  current_logged_in_at   DateTime
-  last_logged_in_at      DateTime
-  account_status      status @default(INACTIVE)
-  created_at          DateTime       @default(now())
-  updated_at          DateTime @updatedAt
-
-  @@map("user")
-
+id String @id @default(cuid())
+first_name String
+last_name String
+email String @unique
+phone_number String
+gender Gender @default(MALE)
+address String?
+age Int?
+nothing Int?
+country Json?
+continent Continent?
+likes voterLikes[]
+votes voterVotes[]
+password String
+salt String
+role Role @default(USER) 
+date_updated DateTime @updatedAt
+date_created DateTime @default(now())
 }
-enum profile_type {
-  ADMIN
-  STUDENT
+model voterLikes {
+  id String @id @default(cuid())
+  competition_id String
+  user_id String
+  voter User @relation(fields: [user_id],references: [id])
+  competition_level CompetitionLevel
+  participant_id String
+  participant Participant @relation(fields: [participant_id],references: [id])
+  date_updated DateTime @updatedAt
+  date_created DateTime @default(now())
 }
- 
- enum status {
-  ACTIVE
-  INACTIVE
- }
-
- enum Gender {
-  MALE
-  FEMALE
- }
- 
- 
-model Student {
-  id                     String              @unique  @id @default(cuid())
-  portal_id              Int @unique  @default(autoincrement())
-  first_name             String?
-  last_name              String?
-  email                  String? @unique           
-  phone                  String?
-  nationality            Json?            
-  date_of_birth          DateTime?
-  school                 String?
-  grade                  String?
-  profile                profile_type @default(STUDENT)
-  password               String?
-  exams                  Applications[]
-  current_logged_in_at   DateTime?
-  last_logged_in_at      DateTime?
+model voterVotes {
+  id String @id @default(cuid())
+  competition_id String
+  competition Competition @relation(fields: [competition_id],references: [id])
+  user_id String
+  voter User @relation(fields: [user_id],references: [id])
+  competition_level CompetitionLevel
+  participant_id String
+  participant Participant @relation(fields: [participant_id],references: [id])
+  date_updated DateTime @updatedAt
+  date_created DateTime @default(now())
 }
 
-model Applications {
-  id String @id @unique @default(cuid())
-  exam_status Boolean? @default(false)
-  postingId String?
-  applicantId String?
-  status exam_status @default(NOT_TAKEN)
-  jobpostings          Subject? @relation(fields: [postingId], references: [id])
-  applicant            Student? @relation(fields: [applicantId],references: [id])
+model Competition {
+  id String @id @default(cuid())
+  competition_name String
+  participants Participant []
+  votes voterVotes[]
+  competition_level CompetitionLevel @default(COUNTRY)
+  competition_description String?
+  status  Status @default(OPEN)
+  periods Periods[]
+  date_updated DateTime @updatedAt
+  date_created DateTime @default(now())
 }
 
-enum exam_status {
-  NOT_TAKEN
-  PASS
-  FAILED
+model Periods {
+  id String @id @default(cuid())
+  level CompetitionLevel
+  competition_id String
+  competition Competition @relation(fields: [competition_id],references: [id])
+  period_start_date DateTime
+  period_end_date DateTime
+  date_updated DateTime @updatedAt
+  date_created DateTime @default(now())
 }
 
-model Subject {
-  id                  String                @id @unique @default(cuid())
-  name              String?
-  description         String?                @db.VarChar(10000)
-  status              Subject_status    @default(OPEN)
-  questionaire        Questionaire[]
-  applications        Applications[]
-  questionaireanswers QuestionaireAnswers[]
-}
-
-
-enum Subject_status {
+enum Status {
   OPEN
   CLOSED
-  DRAFT
 }
-model Exam {
+model Participant {
+id String @id @default(cuid())
+first_name String
+last_name String
+email String
+competition_id String
+competition Competition @relation(fields: [competition_id],references: [id])
+phone_number String
+gender Gender @default(MALE)
+address String?
+age Int?
+competition_level CompetitionLevel? @default(COUNTRY)
+country Json?
+pictures Json?
+continent Continent?
+sponsors Json?
+likes voterLikes[] 
+votes voterVotes[]
+date_updated DateTime @updatedAt
+date_created DateTime @default(now())
+}
+
+model Attachments {
   id String @id @default(cuid())
-  exam_name String
-  questions Questionaire[]
-  created_at          DateTime       @default(now())
-  updated_at          DateTime @updatedAt
-
-}
-model Questionaire {
-  id                          String      @id @default(cuid())
-  postingId                   String?
-  question_type               String
-  options                     Json?     
-  score                       Int?
-  created_at                  DateTime    @default(now())
-  created_by_name             String?
-  created_by_id               Int?
-  boolean_answer              Boolean?
-  multichoice_answer          String? 
-  applicant_id                String?
-  question                    String      @db.VarChar(10000)
-  student_boolean_answer      Boolean?
-  student_multichoice_answer  String?
-  student_unstructured_answer String?
-  exam_id String
-  exam Exam     @relation(fields: [exam_id],references: [id])
-  correct                     Boolean?    @default(false)
-  subject                 Subject? @relation(fields: [postingId], references: [id], map: "Questionaire_postingId_fkey")
-
-  @@index([postingId], map: "Questionaire_postingId_fkey")
-}
-
-model QuestionaireAnswers {
-  id                          String
-  postingId                   String
-  question                    String      @db.VarChar(10000)
-  question_type               String
-  multichoice_answer          String?
-  boolean_answer              Boolean?
-  options                     Json?     
-  score                       Int?
-  student_boolean_answer      Boolean?
-  student_multichoice_answer  String?
-  student_unstructured_answer String?
-  correct                     Boolean?    @default(false)
-  created_at                  DateTime    @default(now())
-  created_by_name             String?
-  created_by_id               Int?
-  applicant_id                String?
-  id_primary                  String      @id @default(cuid())
-  jobpostings                 Subject @relation(fields: [postingId], references: [id], map: "QuestionaireAnswers_postingId_fkey")
-
-  @@index([postingId], map: "QuestionaireAnswers_postingId_fkey")
-}
-
-
-
- model Attachments {
-  id  String @id @default(cuid())
   attachment_name String
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  date_updated DateTime @updatedAt
+  date_created DateTime @default(now())
+}
 
- }
+enum CompetitionLevel {
+  COUNTRY
+  CONTINENT
+  WORLD
+}
 
 
+enum Continent {
+  NORTH_AMERICA
+  SOUTH_AMERICA
+  EUROPE
+  AFRICA
+  ASIA
+  AUSTRALIA
+  ANTARCTICA
+  OCEANIA
+}
+
+enum Role {
+  ADMIN
+  MODEL
+  USER
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
