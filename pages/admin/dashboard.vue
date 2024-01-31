@@ -57,14 +57,10 @@
   <script setup lang="ts">
     import { useToast } from "primevue/usetoast";
     import { storeToRefs } from "pinia";
-    import { useStatisticsStore } from "~/stores/statistics";
     import {useAdminStore} from "~/stores/admin"
     import { useAuthStore } from '@/stores/auth';
-    import { useSageStore } from "~/stores/sage";
     import moment from "moment";
-    const sageStore = useSageStore()
     const adminStore =  useAdminStore()
-    const statisticsStore = useStatisticsStore()
     const authStore = useAuthStore();
     const applicants = ref()
     const current_openings = ref()
@@ -82,20 +78,7 @@
 
     };
 
-      onMounted(async() => {
-
-       let statistics = await sageStore.getAllStatistics().then((data) => {
-            
-            console.log("dddddddddddddddddddd",data.data)
-            applicants.value = data.data.applicants
-            current_openings.value = data.data.active_openings
-            closed_openings.value = data.data.closed_openings
-            total_openings.value = data.data.job_postings
-            rejected_applications.value = data.data.rejected_applications
-            successful_applications.value = data.data.succesful_applications
-       })
-       
-      });
+    
   
   
    
