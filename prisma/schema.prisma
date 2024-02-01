@@ -58,7 +58,7 @@ model Competition {
   votes voterVotes[]
   competition_level CompetitionLevel @default(COUNTRY)
   competition_description String?
-  status  Status @default(OPEN)
+  status  Status @default(CLOSED)
   periods Periods[]
   date_updated DateTime @updatedAt
   date_created DateTime @default(now())

@@ -37,7 +37,7 @@
 				<nav class="navbar navbar-expand gap-3">
 					<div class="topbar-logo-header d-none d-lg-flex">
 						<div class="">
-							<img src="/logo.png" class="logo-icon" alt="logo icon">
+							<img src="/images/logo.png" class="logo-icon" alt="logo icon">
 						</div>
 						<div class="">
 							<h4 class="logo-text">Wabeau</h4>
@@ -63,7 +63,6 @@
 					<div class="user-box dropdown px-3">
 						
 						<a class="d-flex align-items-center nav-link dropdown-toggle gap-3 dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							<img src="/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
 							<div class="user-info">
 								<p class="user-name mb-0">{{ name }} {{ last_name }}</p>
 							</div>

@@ -6,6 +6,7 @@ import ToastService from 'primevue/toastservice';
 import Toast from 'primevue/toast';
 import InputText from 'primevue/inputtext';
 import FileUpload from 'primevue/fileupload';
+import Carousel from 'primevue/carousel';
 import Textarea from 'primevue/textarea';
 import InlineMessage from 'primevue/inlinemessage';
 import Calendar from 'primevue/calendar';
@@ -33,6 +34,7 @@ import SelectButton from 'primevue/selectbutton';
 import InputSwitch from 'primevue/inputswitch';
 import Listbox from 'primevue/listbox';
 import InputNumber from 'primevue/inputnumber';
+import Galleria from "primevue/galleria";
 import Divider from 'primevue/divider';
 import DataView from 'primevue/dataview';
 import Panel from 'primevue/panel';
@@ -77,12 +79,14 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('ProgressSpinner',ProgressSpinner)
     nuxtApp.vueApp.component('Chart',Chart)
     nuxtApp.vueApp.component('Slider',Slider);
-    nuxtApp.vueApp.component('ColorPicker',ColorPicker)
+    nuxtApp.vueApp.component('ColorPicker',ColorPicker);
+    nuxtApp.vueApp.component('Carousel',Carousel);
     nuxtApp.vueApp.component('Splitter',Splitter);
     nuxtApp.vueApp.component('SplitterPanel',SplitterPanel);
     nuxtApp.vueApp.component('InlineMessage',InlineMessage);
     nuxtApp.vueApp.component('BlockUI', BlockUI);
     nuxtApp.vueApp.component('Avatar',Avatar);
+    nuxtApp.vueApp.component('Galleria',Galleria);
     nuxtApp.vueApp.component('Tag', Tag);
     nuxtApp.vueApp.component('BreadCrumb',Breadcrumb)
     nuxtApp.vueApp.component('AvatarGroup',AvatarGroup);

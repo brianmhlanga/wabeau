@@ -99,6 +99,33 @@ export const useAuthStore = defineStore('auth', {
       });
       return result;
   },
+  async   singleUser(id:any){
+   var data = JSON.stringify({
+       "id": id,
+   });
+   var config = {
+       method: 'post',
+       url: '/auth/single',
+       headers: { 
+           'Content-Type': 'application/json'
+       },
+       data: data
+   };
+
+   const result: any = await axios(config).then(function (response) {
+       return {
+           data: response.data,
+           success: true
+        }
+   })
+   .catch(function (error) {
+       console.log(error);
+       return {
+           success: false
+        }
+   });
+   return result;
+},
    async login(info:any){
       var data = JSON.stringify({
          "data": info,
