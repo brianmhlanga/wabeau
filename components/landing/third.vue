@@ -6,43 +6,43 @@
     <div class="flex-1 flex justify-content-center align-items-center bg-primary-400 shadow-1 p-3 border-round-md">
       <div class="text-center">
         <div class="text-sm font-semibold mb-2">AFRICA</div>
-        <span class="font-semibold">4000</span>
+        <span class="font-semibold">{{ continent_stats?.africa }}</span>
       </div>
     </div>
     <div class="flex-1 flex justify-content-center align-items-center bg-primary-400 shadow-1 p-3 border-round-md">
       <div class="text-center">
         <div class="text-sm font-semibold mb-2">EUROPE</div>
-        <span class="font-semibold">40</span>
+        <span class="font-semibold">{{  continent_stats?.europe }}</span>
       </div>
     </div>
     <div class="flex-1 flex justify-content-center align-items-center bg-primary-400 shadow-1 p-3 border-round-md">
       <div class="text-center">
         <div class="text-sm font-semibold mb-2">ASIA</div>
-        <span class="font-semibold">400</span>
+        <span class="font-semibold">{{ continent_stats?.asia }}</span>
       </div>
     </div>
     <div class="flex-1 flex justify-content-center align-items-center bg-primary-400 shadow-1 p-3 border-round-md">
       <div class="text-center">
         <div class="text-sm font-semibold mb-2">SOUTH AMERICA</div>
-        <span class="font-semibold">400</span>
+        <span class="font-semibold">{{ continent_stats?.south_america }}</span>
       </div>
     </div>
     <div class="flex-1 flex justify-content-center align-items-center bg-primary-400 shadow-1 p-3 border-round-md">
       <div class="text-center">
         <div class="text-sm font-semibold mb-2">NORTH AMERICA</div>
-        <span class="font-semibold">400</span>
+        <span class="font-semibold">{{ continent_stats?.north_america }}</span>
       </div>
     </div>
     <div class="flex-1 flex justify-content-center align-items-center bg-primary-400 shadow-1 p-3 border-round-md">
       <div class="text-center">
         <div class="text-sm font-semibold mb-2">AUSTRALIA</div>
-        <span class="font-semibold">400</span>
+        <span class="font-semibold">{{ continent_stats?.australia }}</span>
       </div>
     </div>
     <div class="flex-1 flex justify-content-center align-items-center bg-primary-400 shadow-1 p-3 border-round-md">
       <div class="text-center">
         <div class="text-sm font-semibold mb-2">ARNTACTICA</div>
-        <span class="font-semibold">400</span>
+        <span class="font-semibold">{{ continent_stats?.arntactica }}</span>
       </div>
     </div>
   </div>
@@ -51,7 +51,7 @@
     <section class="surface-section px-4 py-8 md:px-6 lg:px-8">
   <header class="flex w-full justify-content-between align-items-center border-bottom-1 surface-border pb-5">
     <div>
-      <h2 class="mt-0 mb-3 font-medium text-2xl text-900">Competitions</h2>
+      <h2 id="competitions" class="mt-0 mb-3 font-medium text-2xl text-900">Competitions</h2>
       <p class="mt-0 mb-0 font-normal text-base text-500"> Vote for your favorite models and witness the crowning of the next runway sensation. Strut, vote, and celebrate fashion democracy at its finest! </p>
     </div>
     <button class="p-button p-component p-ripple p-button-outlined ngt" type="button" aria-label="Report Issue" data-pc-name="button" data-pc-section="root" data-pd-ripple="true">
@@ -63,9 +63,10 @@
     </button>
   </header>
   <section class="flex flex-wrap flex-column md:flex-row md:align-items-center gap-2 py-5">
-    <DropDown  optionLabel="name" placeholder="Select Competition Status" class="w-full md:w-14rem" />
-    <span class="p-calendar p-component p-inputwrapper p-inputwrapper-filled w-full md:w-15rem" data-pc-name="calendar" data-pc-section="root" readonlyinput="">
-      <input id="range" type="text" role="combobox" class="p-inputtext p-component" autocomplete="off" aria-autocomplete="none" aria-haspopup="dialog" aria-expanded="false" aria-controls="pv_id_189_panel" inputmode="none" tabindex="0" data-pc-section="input">
+    <DropDown @change="filterCompetitions" v-model="current_status" :options="statuses" placeholder="Select Competition Status" class="w-full md:w-14rem" />
+ 
+     <span class="p-calendar p-component p-inputwrapper p-inputwrapper-filled w-full md:w-15rem" data-pc-name="calendar" data-pc-section="root" readonlyinput="">
+      <input @keyup="filterCompetitionsText"  v-model="searchText" id="range" placeholder="Search With Name" type="text" role="combobox" class="p-inputtext p-component" autocomplete="off" aria-autocomplete="none" aria-haspopup="dialog" aria-expanded="false" aria-controls="pv_id_189_panel" inputmode="none" tabindex="0" data-pc-section="input">
       <!---->
     </span>
   </section>
@@ -92,9 +93,15 @@
           <!---->
           <span role="presentation" aria-hidden="true" data-p-ink="true" data-p-ink-active="false" class="p-ink" data-pc-name="ripple" data-pc-section="root"></span>
         </button>
-        <button v-else @click="goRegister(item?.id)" class="p-button p-component p-button-outlined p-button-secondary w-6 ml-2 ghf" type="button" aria-label="Follow" data-pc-name="button" data-pc-section="root" data-pd-ripple="true">
+        <button v-else-if="item?.status === 'OPEN_TO_REGISTRATION'" @click="goRegister(item?.id)" class="p-button p-component p-button-outlined p-button-secondary w-6 ml-2 ghf" type="button" aria-label="Follow" data-pc-name="button" data-pc-section="root" data-pd-ripple="true">
           <span class="p-button-icon p-button-icon-left pi pi-user-plus" data-pc-section="icon"></span>
           <span class="p-button-label" data-pc-section="label">Register As Model</span>
+          <!---->
+          <span role="presentation" aria-hidden="true" data-p-ink="true" data-p-ink-active="false" class="p-ink" data-pc-name="ripple" data-pc-section="root"></span>
+        </button>
+        <button v-else @click="goRegister(item?.id)" class="p-button p-component p-button-outlined p-button-secondary w-6 ml-2 ghf" type="button" aria-label="Follow" data-pc-name="button" data-pc-section="root" data-pd-ripple="true">
+          <span class="p-button-icon p-button-icon-left pi pi-user-plus" data-pc-section="icon"></span>
+          <span class="p-button-label" data-pc-section="label">View Winner</span>
           <!---->
           <span role="presentation" aria-hidden="true" data-p-ink="true" data-p-ink-active="false" class="p-ink" data-pc-name="ripple" data-pc-section="root"></span>
         </button>
@@ -121,6 +128,36 @@
   const emails = ref(email)
   const owner = storeToRefs(authStore).user_id
   const competitions = ref()
+  const current_status = ref()
+  const selectedCity = ref();
+  const continent_stats = ref()
+  const searchText = ref()
+const cities = ref([
+    { name: 'New York', code: 'NY' },
+    { name: 'Rome', code: 'RM' },
+    { name: 'London', code: 'LDN' },
+    { name: 'Istanbul', code: 'IST' },
+    { name: 'Paris', code: 'PRS' }
+]);
+  const statuses = ref(["OPEN_TO_REGISTRATION","OPEN","CLOSED"])
+  const filterCompetitionsText = async () => {
+       await getCompetitions()
+       let comps = competitions.value
+       let typed = searchText.value
+       let normalizedTypedText = typed.toLowerCase().trim()
+       competitions.value = comps.filter((competition) => {
+        return competition.competition_name.toLowerCase().includes(normalizedTypedText)
+       })
+  }
+  const filterCompetitions = async () => {
+     await getCompetitions()
+    let comps = competitions.value
+    let state = current_status.value
+    competitions.value = comps.filter((competition) => {
+      return competition.status === state
+    })
+
+  }
   const goVote = async (itemId:any) => {
     let data = {
       email: emails.value,
@@ -160,6 +197,14 @@
     }
     
   }
+  const getCompetitions = async () => {
+    let data = {
+            id: owner.value
+        }
+        let results = await backofficeStore.allCompetitions(data).then((datdd:any) => {
+            competitions.value = datdd?.data?.competitions
+          })
+  }
   onMounted( async () => {
         let data = {
             id: owner.value
@@ -167,6 +212,10 @@
         let results = await backofficeStore.allCompetitions(data).then((datdd:any) => {
             competitions.value = datdd?.data?.competitions
           })
+        let statistics = await backofficeStore.statistics().then((response) => {
+            console.log(response?.data,"my stats")
+            continent_stats.value = response?.data
+        })
     })
   const dateFormatter = (dateString: any) => {
       const date = new Date(dateString);

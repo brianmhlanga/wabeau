@@ -7,7 +7,7 @@
     <div class="flex align-items-center flex-auto">
         <div class="p-input-icon-left w-full p-input-filled">
         <i class="pi pi-search"></i>
-        <input class="p-inputtext p-component w-full" data-pc-name="inputtext" data-pc-section="root" type="text" placeholder="Model search">
+        <input @keyup="filterCompetitionsText"  v-model="searchText"  class="p-inputtext p-component w-full" data-pc-name="inputtext" data-pc-section="root" type="text" placeholder="Model search">
         </div>
     </div>
     </div>
@@ -28,7 +28,7 @@
         <DropDown @change="filterCountries()" v-model="selectedContinent" :options="continents" placeholder="Select a Continent" class="w-full md:w-12" />
       </div>
       <div class="col-4 mr-4">
-      <DropDown  v-model="selectedCountry" :options="filteredCountries" filter optionLabel="name" placeholder="Select a Country" class="w-full md:w-12">
+      <DropDown  @change="filterWithCountry()" v-model="selectedCountry" :options="filteredCountries" filter optionLabel="name" placeholder="Select a Country" class="w-full md:w-12">
         <template #value="slotProps">
             <div v-if="slotProps.value" class="flex align-items-center">
                 <img :alt="slotProps.value.label" src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png" :class="`mr-2 flag flag-${slotProps.value.code.toLowerCase()}`" style="width: 18px" />
@@ -47,12 +47,13 @@
     </DropDown>	
     </div>
     <div class="col-4">
-      <Button label="Search" class="w-12rem" />
+      <Button @click="resetFilter()" label="Reset" class="w-12rem" />
     </div>
       </div>
       <div class="col-12">
         <div class="grid mt-4">
-          <div v-for="model in participants" class="col-12 md:col-6 lg:col-3 mb-5 lg:mb-0 fdjk">
+          <span v-if="participants.length === 0">NO PARTICIPANTS</span>
+          <div v-else v-for="model in participants" class="col-12 md:col-6 lg:col-3 mb-5 lg:mb-0 fdjk">
             <div class="mb-3 relative">
               <img @click="openGallery(model?.pictures)" :src="`/uploads/${model.pictures[0].image_url}`" class="w-full">
               <button v-if="hasVote(model?.votes)" @click="removeVote(model?.id)" type="button" class="border-1 border-white-alpha-20 border-round py-2 px-3 absolute bg-black-alpha-30 text-white inline-flex align-items-center justify-content-center hover:bg-black-alpha-40 transition-colors transition-duration-300 cursor-pointer p-ripple" data-pd-ripple="true" style="bottom: 1rem; left: 1rem; width: calc(100% - 2rem); backdrop-filter: blur(4px);">
@@ -230,7 +231,7 @@ const sponsors = ref()
 const continents = ref(["AFRICA","ASIA","EUROPE","NORTH_AMERICA","OCEANIA","SOUTH_AMERICA"])
 const gender = ref(["MALE", "FEMALE"])
 const uploaded_images = ref<any>([])
-const participants = ref()
+const participants = ref([])
 const responsiveOptions = ref([
     {
         breakpoint: '1500px',
@@ -252,6 +253,32 @@ const responsiveOptions = ref([
 const first_model = ref()
 const second_model = ref()
 const images = ref()
+const searchText = ref()
+
+const filterWithContinent = async () => {
+  participants.value = []
+  await getModels()
+  let parts = participants.value;
+  let currentContinent = selectedContinent.value;
+  participants.value = parts.filter((participant) => {
+    return participant.continent === currentContinent
+  })
+}
+const filterCompetitionsText = async () => {
+  await getModels();
+
+  let comps = participants.value;
+  let typed = searchText.value;
+  let normalizedTypedText = typed.toLowerCase().trim();
+
+  participants.value = comps.filter((participant) => {
+    const firstNameMatch = participant.first_name.toLowerCase().includes(normalizedTypedText);
+    const lastNameMatch = participant.last_name.toLowerCase().includes(normalizedTypedText);
+
+    return firstNameMatch || lastNameMatch;
+  });
+};
+
 const modelToCompare = async () => {
   let data = {
     id: selectedModel.value,
@@ -444,14 +471,44 @@ const removeVote = async (modelId: any) => {
         }
       })
 }
-const filterCountries = () => {
-    selectedCountry.value = null
-    const filteredCountriess = countries.value.filter(country => country.continent === selectedContinent.value);
 
-    // Create a new object with the filtered countries
-    filteredCountries.value = filteredCountriess
+const filterCountries = async () => {
+      await filterWithContinent()
+      selectedCountry.value = null
+      const filteredCountriess = countries.value.filter(country => country.continent === selectedContinent.value);
 
-    return filteredCountriess;
+      // Create a new object with the filtered countries
+      filteredCountries.value = filteredCountriess
+
+      return filteredCountriess;
+}
+const filterWithCountry = async () => {
+      participants.value = []
+      await getModels()
+      let parts = participants.value;
+      let currentCountry = selectedCountry.value
+      console.log("selected country", currentCountry.name)
+      let currentContinent = selectedContinent.value;
+      participants.value = parts.filter((participant) => {
+       
+        return participant.country?.name === selectedCountry.value?.name
+        
+      })
+}
+const resetFilter = async () => {
+      participants.value = []
+      selectedContinent.value = null
+      selectedCountry.value = null
+      searchText.value = null
+      await getModels()
+}
+
+const getModels = async () => {
+  let results = await backofficeStore.singleCompetition(competitionId).then((data:any) => {
+        console.log("data",data.data.single)
+        competition.value =data.data?.single
+        participants.value = data?.data?.single?.participants
+    })
 }
 
 onMounted( async () => {
