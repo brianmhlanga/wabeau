@@ -106,7 +106,7 @@
   </Galleria>
   <Dialog v-model:visible="compareDialog" maximizable modal header="Compare Models" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
     <div class="col-12">
-      <DropDown v-model="selectedModel" :options="models" optionLabel="first_name"  placeholder="Select Model To Compare With" class="w-full md:w-12 mb-2"/>
+      <DropDown @change="modelToCompare()" v-model="selectedModel" :options="models" filter optionValue="id" optionLabel="first_name"  placeholder="Select Model To Compare With" class="w-full md:w-12 mb-2"/>
      
     </div>
     <div class="grid">
@@ -147,11 +147,11 @@
       
     </div>
     
-    <div class="col-12 md:col-6 flex justify-content-center align-items-center mt-6 sm:mt-0">
+    <div v-if="second_model" class="col-12 md:col-6 flex justify-content-center align-items-center mt-6 sm:mt-0">
       
       <div class="surface-card shadow-2 border-round p-3" style="border-radius: 6px;">
       
-<Galleria :value="first_model?.pictures" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true" containerStyle="max-width: 640px"
+<Galleria :value="second_model?.pictures" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true" containerStyle="max-width: 640px"
     :showItemNavigators="true" :showThumbnails="false">
     <template #item="slotProps">
         <img :src="`/uploads/${slotProps.item.image_url}`" style="width: 100%; display: block;" />
@@ -162,24 +162,31 @@
 </Galleria>
   <div class="flex justify-content-between align-items-start">
     <div>
-      <div class="text-xl font-medium text-900 mb-2">{{ first_model?.first_name }} {{ first_model?.last_name }}</div>
+      <div class="text-xl font-medium text-900 mb-2">{{ second_model?.first_name }} {{ second_model?.last_name }}</div>
      
     </div>
   </div>
   <ul class="list-none m-0 p-0">
     <li class="px-0 py-2 flex justify-content-between align-items-center border-bottom-1 surface-border">
       <span class="text-600 font-medium text-sm">Votes</span>
-      <span class="text-900 font-medium text-sm">{{first_model?.votes ? first_model?.votes.length : 0 }}</span>
+      <span class="text-900 font-medium text-sm">{{second_model?.votes ? second_model?.votes.length : 0 }}</span>
     </li>
     <li class="px-0 py-2 flex justify-content-between align-items-center border-bottom-1 surface-border">
       <span class="text-600 font-medium text-sm">Likes</span>
-      <span class="text-900 font-medium text-sm">{{first_model?.likes ? first_model?.likes.length : 0 }}</span>
+      <span class="text-900 font-medium text-sm">{{second_model?.likes ? second_model?.likes.length : 0 }}</span>
     </li>
     <li class="px-0 py-2 flex justify-content-between align-items-center">
       <span class="text-600 font-medium text-sm">Sponsors</span>
-      <span class="text-600 pt-2"><i v-for="sponsor in first_model?.sponsors" class="p-tag p-component p-tag-warning trt">{{ sponsor }}</i></span>
+      <span class="text-600 pt-2"><i v-for="sponsor in second_model?.sponsors" class="p-tag p-component p-tag-warning trt">{{ sponsor }}</i></span>
     </li>
   </ul>
+</div>
+      
+    </div>
+    <div v-else class="col-12 md:col-6 flex justify-content-center align-items-center mt-6 sm:mt-0">
+      
+      <div class="surface-card shadow-2 border-round p-3" style="border-radius: 6px;">
+      <p>Select Second Model</p>
 </div>
       
     </div>
@@ -243,7 +250,18 @@ const responsiveOptions = ref([
     }
 ]);
 const first_model = ref()
+const second_model = ref()
 const images = ref()
+const modelToCompare = async () => {
+  let data = {
+    id: selectedModel.value,
+    competition_id: competitionId
+  }
+  let result = await backofficeStore.getModel(data).then((response) => {
+    console.log(response?.data?.model)
+    second_model.value = response.data.model
+   })
+}
 const getSelectedModel = async (id) => {
   let data = {
     id: id,
