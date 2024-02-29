@@ -42,7 +42,7 @@
     <ul class="list-none p-0 m-0 flex lg:align-items-center select-none flex-column lg:flex-row border-top-1 surface-border lg:border-top-none">
       <li v-if="first_name">
         {{first_name}} {{ last_name }}
-       ( <img src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png" class="mr-2 flag flag-zw" data-v-inspector="pages/register.vue:65:57" style="width: 18px;">
+       ( <img src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png" :class="`mr-2 flag flag-${(country.code).toLowerCase()}`" data-v-inspector="pages/register.vue:65:57" style="width: 18px;">
         <span>{{ country?.name }}</span>
        )
       </li>

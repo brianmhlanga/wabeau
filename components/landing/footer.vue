@@ -11,16 +11,16 @@
         <span class="text-900 text-xl font-medium block">Company</span>
         <ul class="list-none p-0">
           <li>
-            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">About Peak</a>
+            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">About Wabeau</a>
           </li>
           <li>
-            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">Factories</a>
+            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">Contact Us</a>
           </li>
           <li>
-            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">Careers</a>
+            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">Report an Issue</a>
           </li>
           <li>
-            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">Environmental Initiatives</a>
+            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">Our Initiatives</a>
           </li>
         </ul>
       </div>
@@ -28,19 +28,13 @@
         <span class="text-900 text-xl font-medium block">Account</span>
         <ul class="list-none p-0">
           <li>
-            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">Manage Account</a>
+            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">Manage Profile</a>
           </li>
           <li>
-            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">Saved Items</a>
+            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">Liked Models</a>
           </li>
           <li>
-            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">My Cart</a>
-          </li>
-          <li>
-            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">Wishlist</a>
-          </li>
-          <li>
-            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">Orders &amp; Returns</a>
+            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">My Votes</a>
           </li>
         </ul>
       </div>

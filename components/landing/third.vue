@@ -78,6 +78,25 @@
           <span class="text-xl text-900 font-medium mb-1">{{ item?.competition_name }}</span>
           <span class="text-600 font-medium mb-2">{{ item?.competition_description ? item?.competition_description : "Participate in this competition and stand a chance at glory" }}</span>
           <span class="bg-blue-50 text-blue-400 border-round inline-flex py-1 px-2 text-sm">{{ dateFormatter(item?.periods[0].period_start_date) }} to {{ dateFormatter(item?.periods[2].period_end_date) }}</span>
+          <div class="col-12 mt-2 mb-2 inline-flex  py-1 px-2" id="clockdiv">
+            <p class="text-600 font-medium mb-2">Time to closing</p>
+          <div class="col-timer">
+            <span class="days inner-text">{{ countdown[item.id]?.days }}</span>
+            <div class="smalltext">Days</div>
+          </div>
+          <div class="col-timer">
+            <span class="hours inner-text">{{ countdown[item.id]?.hours }}</span>
+            <div class="smalltext">Hours</div>
+          </div>
+          <div class="col-timer">
+            <span class="minutes inner-text">{{ countdown[item.id]?.minutes }}</span>
+            <div class="smalltext">Minutes</div>
+          </div>
+          <div class="col-timer">
+            <span class="seconds inner-text">{{ countdown[item.id]?.seconds }}</span>
+            <div class="smalltext">Seconds</div>
+          </div>
+        </div>
         </div>
       </div>
       <div class="flex justify-content-between pt-4">
@@ -131,6 +150,7 @@
   const current_status = ref()
   const selectedCity = ref();
   const continent_stats = ref()
+  const countdown = ref({})
   const searchText = ref()
 const cities = ref([
     { name: 'New York', code: 'NY' },
@@ -149,6 +169,29 @@ const cities = ref([
         return competition.competition_name.toLowerCase().includes(normalizedTypedText)
        })
   }
+   const updateCountdown = () => {
+    console.log("running")
+      competitions.value.forEach((item) => {
+        const endTime:any = new Date(item?.periods[2].period_end_date);
+        const currentDate:any = new Date();
+        const timeDifference = endTime - currentDate;
+
+        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+        countdown.value = {
+        ...countdown.value,
+        [item.id]: {
+          days,
+          hours,
+          minutes,
+          seconds,
+        },
+      };
+      });
+    }
   const filterCompetitions = async () => {
      await getCompetitions()
     let comps = competitions.value
@@ -216,6 +259,7 @@ const cities = ref([
             console.log(response?.data,"my stats")
             continent_stats.value = response?.data
         })
+        setInterval(updateCountdown, 1000);
     })
   const dateFormatter = (dateString: any) => {
       const date = new Date(dateString);
@@ -260,5 +304,56 @@ button.p-button.p-component.p-ripple.p-button-outlined.ngt {
 button.p-button.p-component.p-button-outlined.p-button-secondary.w-6.ml-2.ghf {
     background-color: #a5cb3a;
     color: white;
+}
+
+
+h1{
+  color: #396;
+  font-weight: 100;
+  font-size: 40px;
+  margin: 40px 0px 20px;
+}
+
+#clockdiv{
+	font-family: sans-serif;
+	color: #fff;
+	display: inline-block;
+	font-weight: 100;
+	text-align: center;
+	font-size: 30px;
+}
+#clockdiv > div {
+    padding: 10px;
+    padding-bottom: 8px;
+    margin: 5px;
+    margin-left: 0px;
+    color: black;
+    border-radius: 3px;
+    background: #a5cb3a00;
+    display: inline-block;
+}
+
+
+#clockdiv div > span {
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 3px;
+    background: #000000;
+    display: inline-block;
+}
+
+.smalltext {
+    padding-top: 0px;
+    font-size: 10px;
+}
+.inner-text {
+    color: white;
+    font-size: 18px;
+}
+p.text-600.font-medium.mb-2 {
+    padding-top: 33px !important;
+    /* background-color: black; */
+    font-size: 12px;
+    /* color: whitesmoke; */
 }
 </style>

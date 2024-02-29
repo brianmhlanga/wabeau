@@ -83,7 +83,7 @@
                                                 <div class="col-6">
 												<label for="inputChoosePassword" class="form-label">Password</label>
 												<div class="input-group" id="show_hide_password">
-                                                    <InputText @keyup="validatePassword(password)" v-model="password" placeholder="Enter Password" />
+                                                    <InputText @keyup="validatePassword(password)" type="password" v-model="password" placeholder="Enter Password" />
 												</div>
 											</div>
                                             <div class="col-6">
