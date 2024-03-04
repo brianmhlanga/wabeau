@@ -49,29 +49,29 @@
   
       <div v-if="first_name" class="flex justify-content-between lg:block border-top-1 lg:border-top-none surface-border py-3 lg:py-0 px-6 lg:px-0 mt-3 lg:mt-0">
         <button v-if="profile === 'ADMIN'" @click="navigateTo('/admin/dashboard')" class="p-button p-component ml-3 font-bold h-full" type="button" aria-label="Register" data-pc-name="button" data-pc-section="root" data-pd-ripple="true" style="border-radius: 0px;">
-            <!---->
+            
             <span class="p-button-label" data-pc-section="label">Admin Dashboard</span>
-            <!---->
+            
             <span role="presentation" aria-hidden="true" data-p-ink="true" data-p-ink-active="false" class="p-ink" data-pc-name="ripple" data-pc-section="root"></span>
         </button>
         <button @click="logOut" class="p-button p-component ml-3 font-bold h-full custmy" type="button" aria-label="Register" data-pc-name="button" data-pc-section="root" data-pd-ripple="true" style="border-radius: 0px;">
-            <!---->
+            
             <span class="p-button-label" data-pc-section="label">Log Out</span>
-            <!---->
+            
             <span role="presentation" aria-hidden="true" data-p-ink="true" data-p-ink-active="false" class="p-ink" data-pc-name="ripple" data-pc-section="root"></span>
         </button>
         </div>
         <div v-else class="flex justify-content-between lg:block border-top-1 lg:border-top-none surface-border py-3 lg:py-0 px-6 lg:px-0 mt-3 lg:mt-0">
         <button @click="navigateTo('/login')" class="p-button p-component p-button-text font-bold h-full sdjk" type="button" aria-label="Login" data-pc-name="button" data-pc-section="root" data-pd-ripple="true" style="border-radius: 0px;">
-            <!---->
+            
             <span class="p-button-label" data-pc-section="label">Login</span>
-            <!---->
+            
             <span role="presentation" aria-hidden="true" data-p-ink="true" data-p-ink-active="false" class="p-ink" data-pc-name="ripple" data-pc-section="root"></span>
         </button>
         <button @click="navigateTo('/register')" class="p-button p-component ml-3 font-bold h-full thdyr" type="button" aria-label="Register" data-pc-name="button" data-pc-section="root" data-pd-ripple="true" style="border-radius: 0px;">
-            <!---->
+            
             <span class="p-button-label" data-pc-section="label">Register</span>
-            <!---->
+            
             <span role="presentation" aria-hidden="true" data-p-ink="true" data-p-ink-active="false" class="p-ink" data-pc-name="ripple" data-pc-section="root"></span>
         </button>
         </div>

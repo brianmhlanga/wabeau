@@ -331,7 +331,7 @@ const addVote = async (modelId:any,modelCountry:any,modelContinent:any) => {
 
 
 if (competition.value?.competition_level === "COUNTRY") {
-  if(user_country.value?.name !== modelCountry?.name) {
+  if(user_country.value?.name !== modelCountry) {
        
     toast.add({ severity: 'warn', summary: 'Error', detail: "You can only vote for participants from a similar country as you at this level", life: 5000 });
   } else {
@@ -402,7 +402,43 @@ if (competition.value?.competition_level === "COUNTRY") {
     })
      }
 
-} else {
+} else if(competition.value?.competition_level === "WORLD") {
+
+if(user_continent.value !== modelContinent) {
+     console.log("my two values",user_continent.value,modelContinent)
+     toast.add({ severity: 'warn', summary: 'Error', detail: "You can only vote for participants from a similar continent as you at this level", life: 5000 });
+   } else {
+    let data = {
+      user_id: userId,
+      model_id: modelId,
+      level: "CONTINENT",
+      competition_id: competitionId
+  }
+
+  let check = await backofficeStore.checkVote(data).then( async(data2)=> {
+      console.log("check result",data)
+      console.log(data2?.data?.competition?.id)
+      if (!data2?.data?.competition?.id) {
+          let result = await backofficeStore.addVote(data).then( async(data) => {
+              if (data?.data?.success) {
+                      toast.add({ severity: 'info', summary: 'Votes', detail: "Succesfully Voted for model", life: 5000 });
+                      let results = await backofficeStore.singleCompetition(competitionId).then((data:any) => {
+                          console.log("data",data.data.single)
+                          competition.value =data.data?.single
+                          participants.value = data?.data?.single?.participants
+                      })
+                  }
+                  else {
+                      toast.add({ severity: 'warn', summary: 'Error', detail: "Could not vote for model", life: 5000 });
+                  }
+          })
+      } else {
+          toast.add({ severity: 'warn', summary: 'Error', detail: "You have already voted for another participant", life: 5000 });
+      }
+  })
+   }
+
+}  else {
 
    console.log("no more voting")
 

@@ -35,8 +35,8 @@ export default defineNuxtComponent ( {
               { name: 'viewport', content: 'width=device-width, initial-scale=0.7' },
               {
                 hid: 'description',
-                name: 'erp system for silverlands zambia',
-                content: 'Silverlands Holdings Zambia'
+                name: 'Wabeau',
+                content: 'Wabeau'
               }
             ],
             link: [

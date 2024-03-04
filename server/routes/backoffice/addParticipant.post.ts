@@ -13,7 +13,7 @@ export default defineEventHandler(async (event)=>{
                 email,
                 phone_number,
                 gender,
-                country,
+                country: country?.name,
                 continent,
                 sponsors,
                 pictures,

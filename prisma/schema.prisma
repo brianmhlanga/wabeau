@@ -50,15 +50,26 @@ model voterVotes {
   date_updated DateTime @updatedAt
   date_created DateTime @default(now())
 }
-
+model votingHistory {
+  id String @id @default(cuid())
+  competition_id String
+  competition Competition @relation(fields: [competition_id],references: [id])
+  participant_id String
+  participant Participant @relation(fields: [participant_id],references: [id])
+  votes Int
+  competition_level CompetitionLevel
+  date_updated DateTime @updatedAt
+  date_created DateTime @default(now())
+}
 model Competition {
   id String @id @default(cuid())
   competition_name String
   participants Participant []
   votes voterVotes[]
+  history votingHistory[]
   competition_level CompetitionLevel @default(COUNTRY)
   competition_description String?
-  status  Status @default(CLOSED)
+  status  Status @default(OPEN_TO_REGISTRATION)
   periods Periods[]
   date_updated DateTime @updatedAt
   date_created DateTime @default(now())
@@ -91,13 +102,15 @@ phone_number String
 gender Gender @default(MALE)
 address String?
 age Int?
+winner String?
 competition_level CompetitionLevel? @default(COUNTRY)
-country Json?
+country String?
 pictures Json?
 continent Continent?
 sponsors Json?
 likes voterLikes[] 
 votes voterVotes[]
+history votingHistory[]
 date_updated DateTime @updatedAt
 date_created DateTime @default(now())
 }
@@ -113,6 +126,7 @@ enum CompetitionLevel {
   COUNTRY
   CONTINENT
   WORLD
+  CHAMPION
 }
 
 
