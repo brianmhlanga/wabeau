@@ -16,26 +16,6 @@
           <li>
             <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">Contact Us</a>
           </li>
-          <li>
-            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">Report an Issue</a>
-          </li>
-          <li>
-            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">Our Initiatives</a>
-          </li>
-        </ul>
-      </div>
-      <div class="col-12 lg:col-3 md:col-6 flex mt-4 lg:mt-0 lg:pl-4 flex-column">
-        <span class="text-900 text-xl font-medium block">Account</span>
-        <ul class="list-none p-0">
-          <li>
-            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">Manage Profile</a>
-          </li>
-          <li>
-            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">Liked Models</a>
-          </li>
-          <li>
-            <a tabindex="0" class="text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block">My Votes</a>
-          </li>
         </ul>
       </div>
     </div>
