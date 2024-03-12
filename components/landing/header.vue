@@ -32,6 +32,8 @@ onMounted(() => {
         .typeString('Elevate Grace')
         .pauseFor(1000)
         .deleteAll(25)
+        .typeString('Beauty Knows No Boundaries')
+        .deleteAll(40)
         .start();
 });
 </script>
