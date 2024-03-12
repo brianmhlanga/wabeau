@@ -21,6 +21,16 @@ export default defineEventHandler(async (event)=>{
                   likes: true
                 }
               },
+              history: {
+                include: {
+                  participant: {
+                    include: {
+                      votes: true,
+                      likes: true
+                    }
+                  },
+                }
+              },
               periods: true
             }
         });
