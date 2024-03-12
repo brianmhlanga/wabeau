@@ -22,7 +22,6 @@ continent Continent?
 likes voterLikes[]
 votes voterVotes[]
 password String
-salt String
 role Role @default(USER) 
 date_updated DateTime @updatedAt
 date_created DateTime @default(now())
