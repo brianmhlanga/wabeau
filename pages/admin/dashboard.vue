@@ -1,73 +1,74 @@
 <template>
   <NuxtLayout name="dashboard">
     <div class="page-content">
-      <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
-                 <div class="col">
-         <div class="card radius-10 border-start border-0 border-4 border-info">
-          <div class="card-body">
-            <div class="d-flex align-items-center">
-              <div>
-                <p class="mb-0 text-secondary">Competitions</p>
-                <h4 class="my-1 text-info">{{ stats?.competitions }}</h4>
-                <p class="mb-0 font-13">Closed: {{ stats?.closed_competitions }}</p>
-                
-              </div>
-              <div class="widgets-icons-2 rounded-circle bg-gradient-blues text-white ms-auto"><i class='bx bxs-cart'></i>
-              </div>
-            </div>
-          </div>
-         </div>
-         </div>
-         <div class="col">
-        <div class="card radius-10 border-start border-0 border-4 border-danger">
-           <div class="card-body">
-             <div class="d-flex align-items-center">
-               <div>
-                 <p class="mb-0 text-secondary">Total Users</p>
-                 <h4 class="my-1 text-danger">{{ stats?.users }}</h4>
-               </div>
-               <div class="widgets-icons-2 rounded-circle bg-gradient-burning text-white ms-auto"><i class='bx bxs-wallet'></i>
-               </div>
-             </div>
-           </div>
+      <div class="p-5">
+        <div class="grid">
+  <div class="col-12 lg:col-6 xl:col-3">
+    <div class="surface-card shadow-2 p-3 border-1 border-50 border-round">
+      <div class="flex justify-content-between mb-3">
+        <div>
+          <span class="block text-500 font-medium mb-3">Competitions</span>
+          <div class="text-900 font-medium text-xl">{{ stats?.competitions }}</div>
         </div>
+        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width: 2.5rem; height: 2.5rem;">
+          <i class="pi pi-star text-blue-500 text-xl"></i>
         </div>
-        <div class="col">
-        <div class="card radius-10 border-start border-0 border-4 border-success">
-           <div class="card-body">
-             <div class="d-flex align-items-center">
-               <div>
-                 <p class="mb-0 text-secondary">Total Likes</p>
-                 <h4 class="my-1 text-success">{{stats?.likes}}</h4>
-               </div>
-               <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto"><i class='bx bxs-bar-chart-alt-2' ></i>
-               </div>
-             </div>
-           </div>
+      </div>
+      <span class="text-green-500 font-medium">{{ stats?.closed_competitions }} closed </span>
+      <span class="text-500">since launch</span>
+    </div>
+  </div>
+  <div class="col-12 lg:col-6 xl:col-3">
+    <div class="surface-card shadow-2 p-3 border-1 border-50 border-round">
+      <div class="flex justify-content-between mb-3">
+        <div>
+          <span class="block text-500 font-medium mb-3">Users</span>
+          <div class="text-900 font-medium text-xl">{{ stats?.users }}</div>
         </div>
+        <div class="flex align-items-center justify-content-center bg-orange-100 border-round" style="width: 2.5rem; height: 2.5rem;">
+          <i class="pi pi-user text-orange-500 text-xl"></i>
         </div>
-        <div class="col">
-        <div class="card radius-10 border-start border-0 border-4 border-warning">
-           <div class="card-body">
-             <div class="d-flex align-items-center">
-               <div>
-                 <p class="mb-0 text-secondary">Total Votes</p>
-                 <h4 class="my-1 text-warning">{{stats?.votes}}</h4>
-               </div>
-               <div class="widgets-icons-2 rounded-circle bg-gradient-orange text-white ms-auto"><i class='bx bxs-group'></i>
-               </div>
-             </div>
-           </div>
+      </div>
+      <span class="text-green-500 font-medium">{{ stats?.users }} participation </span>
+      <span class="text-500">profiles</span>
+    </div>
+  </div>
+  <div class="col-12 lg:col-6 xl:col-3">
+    <div class="surface-card shadow-2 p-3 border-1 border-50 border-round">
+      <div class="flex justify-content-between mb-3">
+        <div>
+          <span class="block text-500 font-medium mb-3">Likes</span>
+          <div class="text-900 font-medium text-xl">{{ stats?.likes }}</div>
         </div>
-        </div> 
-      </div><!--end row-->
-
-      <!--end row-->
-
+        <div class="flex align-items-center justify-content-center bg-cyan-100 border-round" style="width: 2.5rem; height: 2.5rem;">
+          <i class="pi pi-heart text-cyan-500 text-xl"></i>
+        </div>
+      </div>
+      <span class="text-green-500 font-medium">10% </span>
+      <span class="text-500">increase</span>
+    </div>
+  </div>
+  <div class="col-12 lg:col-6 xl:col-3">
+    <div class="surface-card shadow-2 p-3 border-1 border-50 border-round">
+      <div class="flex justify-content-between mb-3">
+        <div>
+          <span class="block text-500 font-medium mb-3">Votes</span>
+          <div class="text-900 font-medium text-xl">{{ stats?.votes }}</div>
+        </div>
+        <div class="flex align-items-center justify-content-center bg-purple-100 border-round" style="width: 2.5rem; height: 2.5rem;">
+          <i class="pi pi-inbox text-purple-500 text-xl"></i>
+        </div>
+      </div>
+      <span class="text-green-500 font-medium">85 </span>
+      <span class="text-500">responded</span>
+    </div>
+  </div>
+</div>
+      </div>
        <div class="card radius-10">
         <div class="card-header">
           <div>
-              <h6 class="mb-0">Recent Registrations</h6>
+              <h6 class="mb-5">Recent Registrations</h6>
             </div>
           <div class="d-flex align-items-center">
             
@@ -148,9 +149,9 @@
   import { useToast } from "primevue/usetoast";
   import { useAuthStore } from "~/stores/auth";
   import { useBackOfficeStore } from "~/stores/backoffice";
-  // definePageMeta({
-  //     middleware: ["auth"]
-  // });
+  definePageMeta({
+        middleware: ["auth"]
+    });
   const authStore = useAuthStore()
   const backofficeStore = useBackOfficeStore()
   const resetDialog = ref(false)
