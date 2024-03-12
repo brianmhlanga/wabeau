@@ -18,7 +18,7 @@
               <!---->
               <div id="pv_id_26_item_2" class="p-galleria-item" role="group" aria-label="3" aria-roledescription="Slide" data-pc-section="item">
                 <div class="w-full h-full overflow-hidden">
-                  <img @click="openGallery(model?.pictures)" :src="`/uploads/${model?.pictures[0].image_url}`" class="w-full block">
+                  <img @click="openGallery(model?.pictures)" :src="`images/${model?.pictures[0].image_url}`" class="w-full block">
                 </div>
               </div>
               <!---->
@@ -73,10 +73,10 @@
 </div>
   <Galleria v-model:visible="displayGallery" :value="images" :responsiveOptions="responsiveOptions" :numVisible="9" containerStyle="max-width: 50%" :circular="true" :fullScreen="true" :showItemNavigators="true"  :showThumbnails="false">
       <template #item="slotProps">
-          <img :src="`/uploads/${slotProps.item.image_url}`"  style="width: 100%; display: block" />
+          <img :src="`images/${slotProps.item.image_url}`"  style="width: 100%; display: block" />
       </template>
       <template #thumbnail="slotProps">
-          <img :src="`/uploads/${slotProps.item.image_url}`"  style="display: block" />
+          <img :src="`images/${slotProps.item.image_url}`"  style="display: block" />
       </template>
   </Galleria>
   <Dialog v-model:visible="compareDialog" maximizable modal header="Compare Models" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
@@ -92,7 +92,7 @@
 <Galleria :value="first_model?.pictures" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true" containerStyle="max-width: 640px"
     :showItemNavigators="true" :showThumbnails="false">
     <template #item="slotProps">
-        <img :src="`/uploads/${slotProps.item.image_url}`" style="width: 100%; display: block;" />
+        <img :src="`images/${slotProps.item.image_url}`" style="width: 100%; display: block;" />
     </template>
     <template #thumbnail="slotProps">
         <img :src="slotProps.item.image_url" style="display: block;" />
@@ -129,7 +129,7 @@
 <Galleria :value="second_model?.pictures" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true" containerStyle="max-width: 640px"
     :showItemNavigators="true" :showThumbnails="false">
     <template #item="slotProps">
-        <img :src="`/uploads/${slotProps.item.image_url}`" style="width: 100%; display: block;" />
+        <img :src="`images/${slotProps.item.image_url}`" style="width: 100%; display: block;" />
     </template>
     <template #thumbnail="slotProps">
         <img :src="slotProps.item.image_url" style="display: block;" />

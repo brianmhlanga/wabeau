@@ -51,7 +51,7 @@
           <span v-if="participants.length === 0">NO PARTICIPANTS</span>
           <div v-else v-for="model in participants" class="md:col-6 lg:col-3 mb-5 lg:mb-0 fdjk">
             <div class="mb-3 relative">
-              <img @click="openGallery(model?.pictures)" :src="`/uploads/${model.pictures[0].image_url}`" class="w-full">
+              <img @click="openGallery(model?.pictures)" :src="`images/${model.pictures[0].image_url}`" class="w-full">
               <button v-if="hasVote(model?.votes)" @click="removeVote(model?.id)" type="button" class="border-1 border-white-alpha-20 border-round py-2 px-3 absolute bg-black-alpha-30 text-white inline-flex align-items-center justify-content-center hover:bg-black-alpha-40 transition-colors transition-duration-300 cursor-pointer p-ripple" data-pd-ripple="true" style="bottom: 1rem; left: 1rem; width: calc(100% - 2rem); backdrop-filter: blur(4px);">
                 <i class="pi pi-times mr-3 text-base"></i>
                 <span class="text-base">Remove Vote for {{ model?.first_name }}</span>
@@ -103,10 +103,10 @@
   </div>
   <Galleria v-model:visible="displayGallery" :value="images" :responsiveOptions="responsiveOptions" :numVisible="9" containerStyle="max-width: 50%" :circular="true" :fullScreen="true" :showItemNavigators="true"  :showThumbnails="false">
       <template #item="slotProps">
-          <img :src="`/uploads/${slotProps.item.image_url}`"  style="width: 100%; display: block" />
+          <img  :src="`images/${slotProps.item.image_url}`"  style="width: 100%; display: block" />
       </template>
       <template #thumbnail="slotProps">
-          <img :src="`/uploads/${slotProps.item.image_url}`"  style="display: block" />
+          <img :src="`images/${slotProps.item.image_url}`"  style="display: block" />
       </template>
   </Galleria>
   <Dialog v-model:visible="compareDialog" maximizable modal header="Compare Models" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
@@ -122,7 +122,7 @@
 <Galleria :value="first_model?.pictures" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true" containerStyle="max-width: 640px"
     :showItemNavigators="true" :showThumbnails="false">
     <template #item="slotProps">
-        <img :src="`/uploads/${slotProps.item.image_url}`" style="width: 100%; display: block;" />
+        <img :src="`images/${slotProps.item.image_url}`" style="width: 100%; display: block;" />
     </template>
     <template #thumbnail="slotProps">
         <img :src="slotProps.item.image_url" style="display: block;" />
@@ -159,7 +159,7 @@
 <Galleria :value="second_model?.pictures" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true" containerStyle="max-width: 640px"
     :showItemNavigators="true" :showThumbnails="false">
     <template #item="slotProps">
-        <img :src="`/uploads/${slotProps.item.image_url}`" style="width: 100%; display: block;" />
+        <img :src="`images/${slotProps.item.image_url}`" style="width: 100%; display: block;" />
     </template>
     <template #thumbnail="slotProps">
         <img :src="slotProps.item.image_url" style="display: block;" />
