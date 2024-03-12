@@ -350,6 +350,33 @@ export const useBackOfficeStore = defineStore('backoffice', {
     });
     return result;
   },
+  async   singleModel(id:any){
+    var data = JSON.stringify({
+        "id": id,
+    });
+    var config = {
+        method: 'post',
+        url: '/backoffice/single_model',
+        headers: { 
+            'Content-Type': 'application/json'
+        },
+        data: data
+    };
+
+    const result: any = await axios(config).then(function (response) {
+        return {
+            data: response.data,
+            success: true
+         }
+    })
+    .catch(function (error) {
+        console.log(error);
+        return {
+            success: false
+         }
+    });
+    return result;
+},
   async   singleCompetition(id:any){
     var data = JSON.stringify({
         "id": id,
@@ -388,6 +415,56 @@ async   single2Competition(id:any){
             'Content-Type': 'application/json'
         },
         data: data
+    };
+
+    const result: any = await axios(config).then(function (response) {
+        return {
+            data: response.data,
+            success: true
+         }
+    })
+    .catch(function (error) {
+        console.log(error);
+        return {
+            success: false
+         }
+    });
+    return result;
+},
+async   overallWinner(id:any){
+    var data = JSON.stringify({
+        "id": id,
+    });
+    var config = {
+        method: 'post',
+        url: '/backoffice/overallWinner',
+        headers: { 
+            'Content-Type': 'application/json'
+        },
+        data: data
+    };
+
+    const result: any = await axios(config).then(function (response) {
+        return {
+            data: response.data,
+            success: true
+         }
+    })
+    .catch(function (error) {
+        console.log(error);
+        return {
+            success: false
+         }
+    });
+    return result;
+},
+async   allUsers(){
+    var config = {
+        method: 'post',
+        url: '/backoffice/allusers',
+        headers: { 
+            'Content-Type': 'application/json'
+        }
     };
 
     const result: any = await axios(config).then(function (response) {
