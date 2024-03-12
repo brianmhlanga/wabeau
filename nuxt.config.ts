@@ -7,6 +7,9 @@ export default defineNuxtConfig({
     typescript: {
         strict: false
     },
+    experimental: {
+        typedPages: true
+    },
     css: [
         "@andresouzaabreu/vue-data-table/dist/DataTable.css",
         'maz-ui/css/main.css',
