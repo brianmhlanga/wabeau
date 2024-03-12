@@ -43,9 +43,9 @@
                             <SplitButton
                                 icon="pi pi-ellipsis-v"
                                 :model="[
-                                    { label: 'Change Status', icon: 'pi pi-fw pi-code', command: () => changeLevel(slotProps.data?.id) },
                                     { label: 'Change Level', icon: 'pi pi-fw pi-arrow-up', command: () => changeLevel(slotProps.data?.id) },
-                                    { label: 'View Participants', icon: 'pi pi-fw pi-user', command: () => viewParticipants(slotProps.data?.id) }
+                                    { label: 'View Participants', icon: 'pi pi-fw pi-user', command: () => viewParticipants(slotProps.data?.id) },
+                                    { label: 'View Winners', icon: 'pi pi-fw pi-user', command: () => viewWinners(slotProps.data?.id) }
                                 ]"
                             ></SplitButton>
                         </template>
@@ -115,9 +115,9 @@
     import { useToast } from "primevue/usetoast";
     import { useAuthStore } from "~/stores/auth";
     import {useBackOfficeStore} from "~/stores/backoffice";
-    // definePageMeta({
-    //     middleware: ["auth"]
-    // });
+    definePageMeta({
+        middleware: ["auth"]
+    });
     const authStore = useAuthStore()
     const backofficeStore = useBackOfficeStore()
     const addCompetitionDialog = ref(false)
@@ -183,6 +183,11 @@
     const viewParticipants = (competitionId:any) => {
 
         navigateTo(`/admin/participants-${competitionId}`)
+
+    }
+    const viewWinners = (competitionId:any) => {
+
+    navigateTo(`/admin/winners-${competitionId}`)
 
     }
 
