@@ -37,8 +37,7 @@ export default defineEventHandler(async (event)=>{
                 phone_number,
                 role: "USER",
                 email: email,
-                password: password2,
-                salt: salt
+                password: password2
             }
         });
 
