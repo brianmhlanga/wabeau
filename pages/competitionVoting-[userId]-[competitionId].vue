@@ -1,9 +1,6 @@
 <template>
+    <LandingNavbar/>
     <div class="surface-overlay px-3 lg:px-6 flex align-items-stretch relative border-bottom-1 surface-border" style="min-height: 80px;">
-    <div class="flex align-items-center justify-content-center">
-        <img src="/images/logo.png" alt="Image" height="40" class="hidden lg:inline mr-3 lg:mr-6">
-        <img src="/images/logo.png" alt="Image" height="40" class="inline lg:hidden mr-3 lg:mr-6">
-    </div>
     <div class="flex align-items-center flex-auto">
         <div class="p-input-icon-left w-full p-input-filled">
         <i class="pi pi-search"></i>
@@ -15,8 +12,7 @@
     <div class="flex justify-content-between flex-wrap">
       <div class="flex align-items-center mb-4 md:mb-0">
         <div class="text-900 font-bold text-3xl">Models</div>
-        <span class="p-badge p-component ml-3 bg-gray-200 text-gray-900 p-0 border-circle" data-pc-name="badge" data-pc-section="root">76</span>
-      </div>
+        </div>
     </div>
     <p class="text-600 text-xl">This is the list of all the models participating in this particular contest</p>
     <div class="p-divider p-component p-divider-horizontal p-divider-solid p-divider-left" role="separator" aria-orientation="horizontal" data-pc-name="divider" data-pc-section="root" styleclass="w-full border-gray-200" style="justify-content: center;">
@@ -53,7 +49,7 @@
       <div class="col-12">
         <div class="grid mt-4">
           <span v-if="participants.length === 0">NO PARTICIPANTS</span>
-          <div v-else v-for="model in participants" class="col-12 md:col-6 lg:col-3 mb-5 lg:mb-0 fdjk">
+          <div v-else v-for="model in participants" class="md:col-6 lg:col-3 mb-5 lg:mb-0 fdjk">
             <div class="mb-3 relative">
               <img @click="openGallery(model?.pictures)" :src="`/uploads/${model.pictures[0].image_url}`" class="w-full">
               <button v-if="hasVote(model?.votes)" @click="removeVote(model?.id)" type="button" class="border-1 border-white-alpha-20 border-round py-2 px-3 absolute bg-black-alpha-30 text-white inline-flex align-items-center justify-content-center hover:bg-black-alpha-40 transition-colors transition-duration-300 cursor-pointer p-ripple" data-pd-ripple="true" style="bottom: 1rem; left: 1rem; width: calc(100% - 2rem); backdrop-filter: blur(4px);">
@@ -68,7 +64,7 @@
               </button>
             </div>
             <div class="flex flex-column align-items-center">
-              <span class="text-xl text-900 font-medium mb-3">{{model?.first_name}} {{ model?.last_name }}</span>
+              <span @click="goToModel(model?.id)" class="text-xl text-900 font-medium mb-3">{{model?.first_name}} {{ model?.last_name }}</span>
               <span class="text-xl text-900 mb-3">Votes: {{model?.votes ? model?.votes.length : 0 }}</span>
               
               <div class="flex align-items-center mb-3">
@@ -77,6 +73,14 @@
                     <i v-else @click="addLike(model?.id)" class="pi pi-heart text-yellow-500 mr-1"></i>
                     <span class="font-medium">{{model?.likes ? model?.likes.length : 0 }}</span>
                   </span>
+              </div>
+              <div class="mb-3 flex align-items-center justify-content-between">
+                <span class="font-bold text-900">Share on</span>
+              </div>
+              <div class="grid grid-nogutter align-items-center mb-5">
+                <div @click="shareOnFacebook(model?.first_name,model?.last_name,model?.id)" class="col h-3rem text-900 inline-flex justify-content-center align-items-center flex-shrink-0 mr-3 cursor-pointer hover:surface-100 transition-duration-150 transition-colors"> <i class="pi pi-facebook" style="font-size: 1.5rem"></i></div>
+                <div @click="shareOnTwitter(model?.first_name,model?.last_name,model?.id)" class="col h-3rem text-900 inline-flex justify-content-center align-items-center flex-shrink-0 mr-3 cursor-pointer hover:surface-100 transition-duration-150 transition-colors"> <i class="pi pi-twitter" style="font-size: 1.5rem"></i></div>
+                <div @click="shareOnWhatsapp(model?.first_name,model?.last_name,model?.id)" class="col h-3rem text-900 inline-flex justify-content-center align-items-center flex-shrink-0 mr-3 cursor-pointer hover:surface-100 transition-duration-150 transition-colors"> <i class="pi pi-whatsapp" style="font-size: 1.5rem"></i></div>
               </div>
               <div class="flex flex-column w-full p-4">
                     <span class="text-900 font-medium text-xl border-200 pb-2" style="border-bottom: 1px solid;">Sponsors</span>
@@ -193,6 +197,7 @@
     </div>
   </div>
   </Dialog>
+  <LandingFooter/>
 </template>
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -201,6 +206,9 @@ import auth from "~/middleware/auth";
 import { useAuthStore } from "~/stores/auth";
 import { useBackOfficeStore } from "~/stores/backoffice";
 import countriesData from "~/countries.json";
+definePageMeta({
+        middleware: ["auth"]
+});
 const toast = useToast();
 const authStore = useAuthStore()
 const backofficeStore = useBackOfficeStore()
@@ -254,6 +262,31 @@ const first_model = ref()
 const second_model = ref()
 const images = ref()
 const searchText = ref()
+const goToModel = (modelId) => {
+     navigateTo(`/competitionVotingModelView-${userId}-${competitionId}-${modelId}`)
+}
+const shareOnFacebook = (name, surname, modelId) => {
+    let text = `Please vote for your fave ${name} ${surname} who is competing in the ${competition.value.competition_name}, Click the link below to vote`;
+    let link = `http://localhost:3000/competitionRedirect-${competitionId}-${modelId}`;
+    const facebookIntentURL = "https://www.facebook.com/sharer/sharer.php";
+    const contentQuery = `?u=${encodeURIComponent(link)}&description=${encodeURIComponent(text)}`;
+    const shareURL = facebookIntentURL + contentQuery;
+    window.open(shareURL, "_blank");
+};
+const shareOnTwitter = (name,surname,modelId) => {
+        let text = `Please vote for your fave ${name} ${surname} who is competing in the ${competition.value.competition_name}, Click the link below to vote`
+        let link = `http://localhost:3000/competitionRedirect-${competitionId}-${modelId}`
+        const twitterIntentURL = "https://twitter.com/intent/tweet";
+        const contentQuery = `?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
+        const shareURL = twitterIntentURL + contentQuery;
+        window.open(shareURL, "_blank");
+}
+const shareOnWhatsapp = (name,surname,modelId) => {
+        let text = `Please vote for your fave ${name} ${surname} who is competing in the ${competition.value.competition_name}, Click the link below to vote`
+        let link = `http://localhost:3000/competitionRedirect-${competitionId}-${modelId}`
+        const url = "https://wa.me/?text=" + encodeURIComponent(text + "\n" + link);
+        window.open(url, "_blank");
+}
 
 const filterWithContinent = async () => {
   participants.value = []
@@ -328,9 +361,9 @@ return votes.some(
 );
 }
 const addVote = async (modelId:any,modelCountry:any,modelContinent:any) => {
-
-
-if (competition.value?.competition_level === "COUNTRY") {
+  if (userId) {
+     
+    if (competition.value?.competition_level === "COUNTRY") {
   if(user_country.value?.name !== modelCountry) {
        
     toast.add({ severity: 'warn', summary: 'Error', detail: "You can only vote for participants from a similar country as you at this level", life: 5000 });
@@ -443,6 +476,13 @@ if(user_continent.value !== modelContinent) {
    console.log("no more voting")
 
 }
+ }
+ else {
+   toast.add({ severity: 'info', summary: 'Sign In Required', detail: "Log In first", life: 5000 });
+ }
+
+
+
 }
 const addLike = async (modelId: any) => {
     let data = {
@@ -599,5 +639,106 @@ button.p-button.p-component.gallerybutton {
     border-color: white;
     margin-bottom: 5px;
     font-size: 15px;
+}
+.custom-shadow-2 {
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 5px 10px 0 rgba(41,61,102,.2);
+    border: 1px solid #e1e8f5;
+    padding: 24px 20px;
+}
+.flex.flex-column.md\:flex-row.gap-3.md\:align-items-center.mycolor.border-round-xl.p-3 {
+    background-color: #FCAB2B;
+}
+.flex-1.flex.justify-content-center.align-items-center.bg-primary-400.shadow-1.p-3.border-round-md {
+    background-color: #000000 !important;
+    color: white;
+}
+span.bg-blue-50.text-blue-400.border-round.inline-flex.py-1.px-2.text-sm {
+    color: white !important;
+    background-color: #fcab2b !important;
+}
+button.p-button.p-component.p-ripple.p-button-outlined.ngt {
+    background-color: #A5CB3A;
+    color: white;
+}
+.p-button-outlined.p-button-secondary.w-6.ml-2.fdjl {
+    color: white;
+    background-color: #A5CB3A;
+}
+.p-button-outlined.p-button-secondary.w-6.mr-2.dkl {
+    background-color: black;
+    color: white;
+}
+button.p-button.p-component.p-button-outlined.p-button-secondary.w-6.ml-2.ghf {
+    background-color: #a5cb3a;
+    color: white;
+}
+
+
+h1{
+  color: #396;
+  font-weight: 100;
+  font-size: 40px;
+  margin: 40px 0px 20px;
+}
+
+#clockdiv{
+	font-family: sans-serif;
+	color: #fff;
+	display: inline-block;
+	font-weight: 100;
+	text-align: center;
+	font-size: 30px;
+}
+#clockdiv > div {
+    padding: 10px;
+    padding-bottom: 8px;
+    margin: 5px;
+    margin-left: 0px;
+    color: black;
+    border-radius: 3px;
+    background: #a5cb3a00;
+    display: inline-block;
+}
+.md\:col-6.lg\:col-3.mb-5.lg\:mb-0.fdjk {
+    vertical-align: top;
+    /* height: 120px; */
+    border-radius: 5px;
+    margin: 15px;
+    width: 275px;
+    background-color: #fff;
+    box-shadow: 0 5px 10px 0 rgba(41,61,102,.2);
+    cursor: pointer;
+    color: #2d3040;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    z-index: 1;
+}
+
+
+#clockdiv div > span {
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 3px;
+    background: #000000;
+    display: inline-block;
+}
+
+.smalltext {
+    padding-top: 0px;
+    font-size: 10px;
+}
+.inner-text {
+    color: white;
+    font-size: 18px;
+}
+p.text-600.font-medium.mb-2 {
+    padding-top: 33px !important;
+    /* background-color: black; */
+    font-size: 12px;
+    /* color: whitesmoke; */
 }
 </style>
