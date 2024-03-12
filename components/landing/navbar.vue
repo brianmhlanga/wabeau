@@ -19,12 +19,6 @@
           <span role="presentation" aria-hidden="true" data-p-ink="true" data-p-ink-active="false" class="p-ink" data-pc-name="ripple" data-pc-section="root"></span>
         </a>
       </li>
-      <li href="/contestants">
-        <a class="flex px-6 p-3 lg:px-3 lg:py-2 align-items-center text-600 hover:text-900 hover:surface-100 font-medium border-round cursor-pointer transition-colors transition-duration-150 p-ripple" data-pd-ripple="true">
-          <span>Contestants</span>
-          <span role="presentation" aria-hidden="true" data-p-ink="true" data-p-ink-active="false" class="p-ink" data-pc-name="ripple" data-pc-section="root"></span>
-        </a>
-      </li>
       <li href="/faqs">
         <a class="flex px-6 p-3 lg:px-3 lg:py-2 align-items-center text-600 hover:text-900 hover:surface-100 font-medium border-round cursor-pointer transition-colors transition-duration-150 p-ripple" data-pd-ripple="true">
           <span>FAQs</span>
@@ -48,7 +42,7 @@
       </li>
   
       <div v-if="first_name" class="flex justify-content-between lg:block border-top-1 lg:border-top-none surface-border py-3 lg:py-0 px-6 lg:px-0 mt-3 lg:mt-0">
-        <button v-if="profile === 'ADMIN'" @click="navigateTo('/admin/dashboard')" class="p-button p-component ml-3 font-bold h-full" type="button" aria-label="Register" data-pc-name="button" data-pc-section="root" data-pd-ripple="true" style="border-radius: 0px;">
+        <button v-if="role === 'ADMIN'" @click="navigateTo('/admin/dashboard')" class="p-button p-component ml-3 font-bold h-full custmy" type="button" aria-label="Register" data-pc-name="button" data-pc-section="root" data-pd-ripple="true" style="border-radius: 0px;">
             
             <span class="p-button-label" data-pc-section="label">Admin Dashboard</span>
             
@@ -80,12 +74,10 @@
 </div>
 </template>
 <script lang="ts" setup>
-import { storeToRefs } from "pinia";
-import { useToast } from "primevue/usetoast";
 import { useAuthStore } from "~/stores/auth";
 const authStore = useAuthStore()
 //@ts-ignore
-const { value: { first_name, last_name, profile,country, id }} = useCookie('user');
+const { value: { first_name, last_name, profile,country,role, id }} = useCookie('user');
 const logOut = async () => {
     let result = await authStore.logout()
 }
