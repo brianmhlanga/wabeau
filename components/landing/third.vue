@@ -73,12 +73,12 @@
   <div class="grid">
   <div v-for="item in competitions" class="col-12 md:col-6 xl:col-4 p-3">
     <div class="surface-card shadow-2 border-round p-4">
-      <div class="flex border-bottom-1 surface-border pb-4">
+      <div  class="flex border-bottom-1 surface-border pb-4">
          <div class="flex flex-column align-items-start">
           <span class="text-xl text-900 font-medium mb-1">{{ item?.competition_name }}</span>
           <span class="text-600 font-medium mb-2">{{ item?.competition_description ? item?.competition_description : "Participate in this competition and stand a chance at glory" }}</span>
           <span class="bg-blue-50 text-blue-400 border-round inline-flex py-1 px-2 text-sm">{{ dateFormatter(item?.periods[0].period_start_date) }} to {{ dateFormatter(item?.periods[2].period_end_date) }}</span>
-          <div class="col-12 mt-2 mb-2 inline-flex  py-1 px-2" id="clockdiv">
+          <div v-if="item?.status === 'OPEN' || item?.status === 'OPEN_TO_REGISTRATION'" class="col-12 mt-2 mb-2 inline-flex  py-1 px-2" id="clockdiv">
             <p class="text-600 font-medium mb-2">Time to closing</p>
           <div class="col-timer">
             <span class="days inner-text">{{ countdown[item.id]?.days }}</span>
@@ -97,28 +97,41 @@
             <div class="smalltext">Seconds</div>
           </div>
         </div>
+        <div v-else class="col-12 mt-2 mb-2 inline-flex  py-1 px-2" id="clockdiv">
+            <p class="text-600 font-medium mb-2">Time left</p>
+          <div class="col-timer">
+            <span class="days inner-text">00</span>
+            <div class="smalltext">Days</div>
+          </div>
+          <div class="col-timer">
+            <span class="hours inner-text">00</span>
+            <div class="smalltext">Hours</div>
+          </div>
+          <div class="col-timer">
+            <span class="minutes inner-text">00</span>
+            <div class="smalltext">Minutes</div>
+          </div>
+          <div class="col-timer">
+            <span class="seconds inner-text">00</span>
+            <div class="smalltext">Seconds</div>
+          </div>
+        </div>
         </div>
       </div>
-      <div class="flex justify-content-between pt-4">
-        <button class="p-button p-component p-button-outlined p-button-secondary w-6 mr-2 dkl" type="button" aria-label="View" data-pc-name="button" data-pc-section="root" data-pd-ripple="true">
-          <span class="p-button-icon p-button-icon-left pi pi-search" data-pc-section="icon"></span>
-          <span class="p-button-label" data-pc-section="label">View</span>
-          <!---->
-          <span role="presentation" aria-hidden="true" data-p-ink="true" data-p-ink-active="false" class="p-ink" data-pc-name="ripple" data-pc-section="root"></span>
-        </button>
-        <button v-if="item?.status === 'OPEN'" @click="goVote(item?.id)" class="p-button p-component p-button-outlined p-button-secondary w-6 ml-2 fdjl" type="button" aria-label="Follow" data-pc-name="button" data-pc-section="root" data-pd-ripple="true">
+      <div class="flex justify-content-between pt-4 col-12">
+        <button v-if="item?.status === 'OPEN'" @click="goVote(item?.id)" class="p-button p-component p-button-outlined p-button-secondary w-12 ml-2 fdjl" type="button" aria-label="Follow" data-pc-name="button" data-pc-section="root" data-pd-ripple="true">
           <span class="p-button-icon p-button-icon-left pi pi-user-plus" data-pc-section="icon"></span>
           <span class="p-button-label" data-pc-section="label">Vote Now</span>
           <!---->
           <span role="presentation" aria-hidden="true" data-p-ink="true" data-p-ink-active="false" class="p-ink" data-pc-name="ripple" data-pc-section="root"></span>
         </button>
-        <button v-else-if="item?.status === 'OPEN_TO_REGISTRATION'" @click="goRegister(item?.id)" class="p-button p-component p-button-outlined p-button-secondary w-6 ml-2 ghf" type="button" aria-label="Follow" data-pc-name="button" data-pc-section="root" data-pd-ripple="true">
+        <button v-else-if="item?.status === 'OPEN_TO_REGISTRATION'" @click="goRegister(item?.id)" class="p-button p-component p-button-outlined p-button-secondary w-12 ml-2 ghf" type="button" aria-label="Follow" data-pc-name="button" data-pc-section="root" data-pd-ripple="true">
           <span class="p-button-icon p-button-icon-left pi pi-user-plus" data-pc-section="icon"></span>
           <span class="p-button-label" data-pc-section="label">Register As Model</span>
           <!---->
           <span role="presentation" aria-hidden="true" data-p-ink="true" data-p-ink-active="false" class="p-ink" data-pc-name="ripple" data-pc-section="root"></span>
         </button>
-        <button v-else @click="goRegister(item?.id)" class="p-button p-component p-button-outlined p-button-secondary w-6 ml-2 ghf" type="button" aria-label="Follow" data-pc-name="button" data-pc-section="root" data-pd-ripple="true">
+        <button v-else @click="viewWinner(item?.id)" class="p-button p-component p-button-outlined p-button-secondary w-12 ml-2 ghf" type="button" aria-label="Follow" data-pc-name="button" data-pc-section="root" data-pd-ripple="true">
           <span class="p-button-icon p-button-icon-left pi pi-user-plus" data-pc-section="icon"></span>
           <span class="p-button-label" data-pc-section="label">View Winner</span>
           <!---->
@@ -129,6 +142,31 @@
   </div>
  
 </div>
+<Dialog v-model:visible="winnerModal" modal header="Overall Winner" :style="{ width: '25rem' }">
+    <span class="p-text-secondary block mb-5">Winning Participant information.</span>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="username" class="font-semibold w-6rem">Full Name</label>
+        {{overall_winner?.participant?.first_name}} {{overall_winner?.participant?.last_name}}
+    </div>
+    <div class="flex align-items-center gap-3 mb-5">
+        <label for="email" class="font-semibold w-6rem">Country</label>
+        {{overall_winner?.participant?.country}}
+    </div>
+    <div class="flex align-items-center gap-3 mb-5">
+        <label for="email" class="font-semibold w-6rem">Final Round Votes</label>
+        {{overall_winner?.votes}} Votes
+    </div>
+    <div class="flex justify-content-end gap-2">
+        <Button type="button" label="Cancel" severity="secondary" @click="winnerModal = false"></Button>
+    </div>
+</Dialog>
+<Dialog v-model:visible="over18Modal" modal header="Confirm Age" :style="{ width: '25rem' }">
+    <span class="p-text-secondary block mb-5">Are you over 18 years old?</span>
+    <div class="flex justify-content-end gap-2">
+        <Button type="button" label="Yes" @click="handleConfirmAge(true)"></Button>
+        <Button type="button" label="No" @click="handleConfirmAge(false)"></Button>
+    </div>
+</Dialog>
 </section>
 </template>
 <script lang="ts" setup>
@@ -141,13 +179,16 @@
   const authStore = useAuthStore()
   const backofficeStore = useBackOfficeStore()
   const isLoading = ref(false);
+  const over18Modal = ref(false);
   //@ts-ignore
   const { value: { first_name, last_name, profile,country, id,email }} = useCookie('user');
   const userId = ref(id)
   const emails = ref(email)
   const owner = storeToRefs(authStore).user_id
   const competitions = ref()
+  const winnerModal = ref(false)
   const current_status = ref()
+  const overall_winner = ref()
   const selectedCity = ref();
   const continent_stats = ref()
   const countdown = ref({})
@@ -168,6 +209,21 @@ const cities = ref([
        competitions.value = comps.filter((competition) => {
         return competition.competition_name.toLowerCase().includes(normalizedTypedText)
        })
+  }
+  const handleConfirmAge = (varr) => {
+    if (varr === true) {
+      over18Modal.value = false
+    } else {
+      over18Modal.value = true
+      toast.add({ severity: 'info', summary: 'Age Restriction', detail: "Only User Over 18 Years are allowed on the platform, You can close the page", life: 5000 });
+    }
+  }
+  const handleClosing = () => {
+    if(over18Modal.value === true) {
+      over18Modal.value = false
+    } else {
+      over18Modal.value = true
+    }
   }
    const updateCountdown = () => {
     console.log("running")
@@ -217,6 +273,14 @@ const cities = ref([
     }
     
   }
+  const viewWinner = async (itemId) => {
+       let winner = await backofficeStore.overallWinner(itemId).then((data) => {
+             
+             console.log(data?.data)
+             overall_winner.value = data?.data?.overall_winner
+             winnerModal.value = true
+       })
+  }
   const goRegister = async (itemId:any) => {
     let data = {
       email: emails.value,
@@ -260,6 +324,7 @@ const cities = ref([
             continent_stats.value = response?.data
         })
         setInterval(updateCountdown, 1000);
+        over18Modal.value = true
     })
   const dateFormatter = (dateString: any) => {
       const date = new Date(dateString);
@@ -293,15 +358,15 @@ button.p-button.p-component.p-ripple.p-button-outlined.ngt {
     background-color: #A5CB3A;
     color: white;
 }
-.p-button-outlined.p-button-secondary.w-6.ml-2.fdjl {
+.p-button-outlined.p-button-secondary.w-12.ml-2.fdjl {
     color: white;
     background-color: #A5CB3A;
 }
-.p-button-outlined.p-button-secondary.w-6.mr-2.dkl {
+.p-button-outlined.p-button-secondary.w-12.mr-2.dkl {
     background-color: black;
     color: white;
 }
-button.p-button.p-component.p-button-outlined.p-button-secondary.w-6.ml-2.ghf {
+button.p-button.p-component.p-button-outlined.p-button-secondary.w-12.ml-2.ghf {
     background-color: #a5cb3a;
     color: white;
 }
