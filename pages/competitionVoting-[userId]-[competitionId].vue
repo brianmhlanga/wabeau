@@ -267,7 +267,7 @@ const goToModel = (modelId) => {
 }
 const shareOnFacebook = (name, surname, modelId) => {
     let text = `Please vote for your fave ${name} ${surname} who is competing in the ${competition.value.competition_name}, Click the link below to vote`;
-    let link = `http://localhost:3000/competitionRedirect-${competitionId}-${modelId}`;
+    let link = `http://models.devpreview.net/competitionRedirect-${competitionId}-${modelId}`;
     const facebookIntentURL = "https://www.facebook.com/sharer/sharer.php";
     const contentQuery = `?u=${encodeURIComponent(link)}&description=${encodeURIComponent(text)}`;
     const shareURL = facebookIntentURL + contentQuery;
@@ -275,7 +275,7 @@ const shareOnFacebook = (name, surname, modelId) => {
 };
 const shareOnTwitter = (name,surname,modelId) => {
         let text = `Please vote for your fave ${name} ${surname} who is competing in the ${competition.value.competition_name}, Click the link below to vote`
-        let link = `http://localhost:3000/competitionRedirect-${competitionId}-${modelId}`
+        let link = `http://models.devpreview.net/competitionRedirect-${competitionId}-${modelId}`
         const twitterIntentURL = "https://twitter.com/intent/tweet";
         const contentQuery = `?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
         const shareURL = twitterIntentURL + contentQuery;
@@ -283,7 +283,7 @@ const shareOnTwitter = (name,surname,modelId) => {
 }
 const shareOnWhatsapp = (name,surname,modelId) => {
         let text = `Please vote for your fave ${name} ${surname} who is competing in the ${competition.value.competition_name}, Click the link below to vote`
-        let link = `http://localhost:3000/competitionRedirect-${competitionId}-${modelId}`
+        let link = `http://models.devpreview.net/competitionRedirect-${competitionId}-${modelId}`
         const url = "https://wa.me/?text=" + encodeURIComponent(text + "\n" + link);
         window.open(url, "_blank");
 }
