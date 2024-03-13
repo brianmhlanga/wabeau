@@ -34,14 +34,14 @@
       </li>
     </ul>
     <ul class="list-none p-0 m-0 flex lg:align-items-center select-none flex-column lg:flex-row border-top-1 surface-border lg:border-top-none">
-      <li v-if="first_name">
+      <li v-if="checkLogged()">
         {{first_name}} {{ last_name }}
        ( <img src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png" :class="`mr-2 flag flag-${(country.code).toLowerCase()}`" data-v-inspector="pages/register.vue:65:57" style="width: 18px;">
         <span>{{ country?.name }}</span>
        )
       </li>
   
-      <div v-if="first_name" class="flex justify-content-between lg:block border-top-1 lg:border-top-none surface-border py-3 lg:py-0 px-6 lg:px-0 mt-3 lg:mt-0">
+      <div v-if="checkLogged()" class="flex justify-content-between lg:block border-top-1 lg:border-top-none surface-border py-3 lg:py-0 px-6 lg:px-0 mt-3 lg:mt-0">
         <button v-if="role === 'ADMIN'" @click="navigateTo('/admin/dashboard')" class="p-button p-component ml-3 font-bold h-full custmy" type="button" aria-label="Register" data-pc-name="button" data-pc-section="root" data-pd-ripple="true" style="border-radius: 0px;">
             
             <span class="p-button-label" data-pc-section="label">Admin Dashboard</span>
@@ -78,6 +78,15 @@ import { useAuthStore } from "~/stores/auth";
 const authStore = useAuthStore()
 //@ts-ignore
 const { value: { first_name, last_name, profile,country,role, id }} = useCookie('user');
+const checkLogged = async () => {
+  let checked = false
+  if (first_name) {
+    checked = true
+  } else {
+    checked = false
+  }
+   return checked
+}
 const logOut = async () => {
     let result = await authStore.logout()
 }
