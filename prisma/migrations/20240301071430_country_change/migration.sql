@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `competition` MODIFY `status` ENUM('OPEN_TO_REGISTRATION', 'OPEN', 'CLOSED') NOT NULL DEFAULT 'OPEN_TO_REGISTRATION';
+
+-- AlterTable
+ALTER TABLE `participant` MODIFY `country` VARCHAR(191) NULL;

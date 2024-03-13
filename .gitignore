@@ -3,9 +3,7 @@ node_modules
 .nuxt
 .nitro
 .cache
-.env
 dist
 public/excel
-prisma/migrations
 prisma/ERD.svg
 public/deleted

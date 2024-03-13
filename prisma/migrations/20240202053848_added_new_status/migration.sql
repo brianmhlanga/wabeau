@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `competition` MODIFY `status` ENUM('OPEN_TO_REGISTRATION', 'OPEN', 'CLOSED') NOT NULL DEFAULT 'CLOSED';
